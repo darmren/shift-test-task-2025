@@ -1,46 +1,53 @@
 package org.example;
 
 import java.io.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FilterUtil {
     private final CliArgsConfig config;
-    //    private final Pattern stringPattern = Pattern.compile("^[a-zA-Zа-яА-Я ]+$");
-    private final String stringRegex;
-    private final String integerRegex;
-    private final String floatRegex;
     private final String outFilePath;
+
+    private final Pattern stringPattern;
+    private final Pattern digitPattern;
+
     private Writer integerWriter;
     private Writer floatWriter;
     private Writer stringWriter;
 
     public FilterUtil(CliArgsConfig config) {
         this.config = config;
-        stringRegex = "^[a-zA-Zа-яА-Я ]+$";
-        integerRegex = "^-?\\d+$";
-        floatRegex = "^-?\\d+\\.\\d+$";
+        var stringRegex = "\\D[a-zA-Zа-яА-Я]\\D+";
+        var digitRegex = "(?<float>-?(\\d+\\.\\d+)([eE][-+]?\\d+)?)|(?<int>-?\\d+)";
+        stringPattern = Pattern.compile(stringRegex);
+        digitPattern = Pattern.compile(digitRegex);
         outFilePath = setOutFilePath();
     }
 
     public void filter() throws IOException {
-        for (String fileName : config.getFilesNames()) {
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while (bufferedReader.ready()) {
-                var line = bufferedReader.readLine();
-                writeToNecessaryFile(line);
-            }
+        MyReader myReader = new MyReader(config.getFilesNames());
+        while (myReader.ready()) {
+            var line = myReader.readLine();
+            writeToNecessaryFile(line);
         }
-        closeWrites();
+        closeWriters();
     }
 
     private void writeToNecessaryFile(String line) throws IOException {
-        if (Pattern.matches(integerRegex, line))
-            writeToIntegerFile(line);
-        else if (Pattern.matches(floatRegex, line))
-            writeToFloatFile(line);
-        else if (Pattern.matches(stringRegex, line))
-            writeToStringFile(line);
+        Matcher stringMatcher = stringPattern.matcher(line);
+        Matcher digitMatcher = digitPattern.matcher(line);
+
+        while (digitMatcher.find()){
+            var floatGroup = digitMatcher.group("float");
+            var intGroup = digitMatcher.group("int");
+            if (floatGroup != null)
+                writeToFloatFile(floatGroup);
+            if (intGroup != null)
+                writeToIntegerFile(intGroup);
+        }
+        while (stringMatcher.find()) {
+            writeToStringFile(stringMatcher.group());
+        }
     }
 
     private void writeToIntegerFile(String line) throws IOException {
@@ -68,7 +75,7 @@ public class FilterUtil {
         return new FileWriter(file);
     }
 
-    private String setOutFilePath(){
+    private String setOutFilePath() {
         var stringBuilder = new StringBuilder();
         if (config.getOutPath() != null)
             stringBuilder.append(config.getOutPath());
@@ -77,7 +84,7 @@ public class FilterUtil {
         return stringBuilder.toString();
     }
 
-    private void closeWrites() throws IOException {
+    private void closeWriters() throws IOException {
         if (integerWriter != null)
             integerWriter.close();
         if (floatWriter != null)
