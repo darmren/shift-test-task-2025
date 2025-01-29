@@ -8,22 +8,16 @@ import java.util.List;
 public class MyReader extends Reader {
     private final List<BufferedReader> readers;
     private int currentReader;
-    private int readToEOF;
 
     public MyReader(List<String> fileNames) throws FileNotFoundException {
         currentReader = 0;
         readers = new ArrayList<>();
-        for (String fileName : fileNames){
+        for (String fileName : fileNames) {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             readers.add(bufferedReader);
         }
     }
-
-//    @Override
-//    public int read() throws IOException {
-//        return readers.get(currentReader).read();
-//    }
 
     @Override
     public int read(char[] cbuf, int off, int len) throws IOException {
@@ -37,7 +31,8 @@ public class MyReader extends Reader {
         if (readers.isEmpty())
             return false;
         var res = readers.get(currentReader).ready();
-        if (!res){
+        if (!res) {
+            readers.get(currentReader).close();
             readers.remove(readers.get(currentReader));
             currentReader -= 1;
             nextReader();
@@ -52,8 +47,8 @@ public class MyReader extends Reader {
         }
     }
 
-    public void nextReader(){
-        currentReader = (currentReader == readers.size() - 1)? 0 : currentReader + 1;
+    public void nextReader() {
+        currentReader = (currentReader == readers.size() - 1) ? 0 : currentReader + 1;
     }
 
     public String readLine() throws IOException {
