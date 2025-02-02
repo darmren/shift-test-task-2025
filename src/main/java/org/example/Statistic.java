@@ -6,6 +6,7 @@ abstract class Statistic {
 
     public Statistic(String dataType){
         this.dataType = dataType;
+        charsNumber = 0;
     }
 
     public void showShort(){

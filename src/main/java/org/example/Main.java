@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class Main {
@@ -9,5 +10,6 @@ public class Main {
         var config = CliArgsConfig.parseArgsToConfig(args);
         var filterUtil = new FilterUtil(config);
         filterUtil.filter();
+        filterUtil.showStatistic();
     }
 }

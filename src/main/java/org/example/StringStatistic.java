@@ -7,9 +7,7 @@ public class StringStatistic extends Statistic{
 
     public StringStatistic(String dataType) {
         super(dataType);
-        charsNumber = 0;
         linesNumber = 0;
-        maxLine = "";
     }
 
     @Override
@@ -31,7 +29,7 @@ public class StringStatistic extends Statistic{
         var lineLen = line.length();
         if (minLine == null || lineLen < minLine.length())
             minLine = line;
-        if (lineLen > maxLine.length())
+        if (maxLine == null || lineLen > maxLine.length())
             maxLine = line;
         charsNumber += lineLen;
         linesNumber += 1;
