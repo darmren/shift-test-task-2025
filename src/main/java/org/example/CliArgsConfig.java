@@ -1,58 +1,37 @@
 package org.example;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import org.example.validation.FileNamesValidator;
+import org.example.validation.OutPathValidation;
+import org.example.validation.StatisticFlagsValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
-@AllArgsConstructor
 @ToString
 @Getter
+@Parameters(parametersValidators = StatisticFlagsValidator.class)
 public class CliArgsConfig {
-    private final List<String> filesNames;
-    private final String outPath;
-    private final String prefix;
-    private final boolean isAppending;
-    private final boolean isFullStat;
+    @Parameter(validateWith = FileNamesValidator.class)
+    private List<String> files;
 
-    public static CliArgsConfig parseArgsToConfig(String[] args) {
-        var configBuilder = CliArgsConfig.builder();
-        var files = new ArrayList<String>();
-        int i = 0;
-        while (i < args.length) {
-            switch (args[i]) {
-                case "-s":
-                    configBuilder.isFullStat(false);
-                    break;
-                case "-f":
-                    configBuilder.isFullStat(true);
-                    break;
-                case "-a":
-                    configBuilder.isAppending(true);
-                    break;
-                case "-o":
-                    configBuilder.outPath(args[i + 1]);
-                    i++;
-                    break;
-                case "-p":
-                    configBuilder.prefix(args[i + 1]);
-                    i++;
-                    break;
-                default:
-                    if (args[i].contains(".txt"))
-                        files.add(args[i]);
-                    else {
-                        System.out.println("Неверный формат ввода. Повторите попытку\n");
-                        return null;
-                    }
-            }
-            i++;
-        }
-        configBuilder.filesNames(files);
-        return configBuilder.build();
-    }
+    @Parameter(names = "-o", description = "Директория для выходных файлов", validateWith = OutPathValidation.class)
+    private String outPath;
+
+    @Parameter(names = "-p", description = "Префикс для выходных файлов")
+    private String prefix;
+
+    @Parameter(names = "-a", description = "Открыть выходные файлы на дозапись")
+    private boolean isAppending = false;
+
+    @Parameter(names = "-f", description = "Полная статистика")
+    private boolean isFullStat = false;
+
+    @Parameter(names = "-s", description = "Краткая статистика")
+    private boolean isShortStat = false;
 }

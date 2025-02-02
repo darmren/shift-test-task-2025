@@ -22,7 +22,7 @@ public class FilterUtil {
     }
 
     public void filter() throws IOException {
-        MyReader myReader = new MyReader(config.getFilesNames());
+        MyReader myReader = new MyReader(config.getFiles());
         MyWriter myWriter  = new MyWriter(config);
         while (myReader.ready()) {
             var line = myReader.readLine();
@@ -46,7 +46,7 @@ public class FilterUtil {
         for (Statistic stat : statistics.values()) {
             if (config.isFullStat())
                 stat.showFull();
-            else
+            else if(config.isShortStat())
                 stat.showShort();
         }
     }

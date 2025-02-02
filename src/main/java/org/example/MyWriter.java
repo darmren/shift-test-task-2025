@@ -55,8 +55,11 @@ public class MyWriter extends Writer {
 
     private String setOutFilePath() {
         var stringBuilder = new StringBuilder();
-        if (config.getOutPath() != null)
+        if (config.getOutPath() != null){
             stringBuilder.append(config.getOutPath());
+            if (!config.getOutPath().endsWith("\\"))
+                stringBuilder.append('\\');
+        }
         if (config.getPrefix() != null)
             stringBuilder.append(config.getPrefix());
         return stringBuilder.toString();
