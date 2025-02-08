@@ -2,15 +2,12 @@ package org.example;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.example.validation.FileNamesValidator;
 import org.example.validation.OutPathValidation;
 import org.example.validation.StatisticFlagsValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ToString

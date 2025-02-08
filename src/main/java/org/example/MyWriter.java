@@ -5,12 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MyWriter extends Writer {
-    private final HashMap<String, Writer> writers;
+    private final HashMap<Type, Writer> writers;
     private final String outFilePath;
     private final CliArgsConfig config;
 
@@ -38,16 +35,15 @@ public class MyWriter extends Writer {
             writer.close();
     }
 
-    public void write(String line, String writerType) throws IOException {
-        if (writers.get(writerType) == null) {
-            var dataType = writerType.replace("Writer", "");
-            writers.put(writerType, createWriter(dataType));
+    public void write(String line, Type type) throws IOException {
+        if (writers.get(type) == null) {
+            writers.put(type, createWriter(type));
         }
-        writers.get(writerType).write(line + '\n');
+        writers.get(type).write(line + '\n');
     }
 
-    private Writer createWriter(String dataType) throws IOException {
-        File file = new File(outFilePath + dataType + ".txt");
+    private Writer createWriter(Type type) throws IOException {
+        File file = new File(outFilePath + type + ".txt");
         if (config.isAppending())
             return new FileWriter(file, true);
         return new FileWriter(file);
@@ -55,7 +51,7 @@ public class MyWriter extends Writer {
 
     private String setOutFilePath() {
         var stringBuilder = new StringBuilder();
-        if (config.getOutPath() != null){
+        if (config.getOutPath() != null) {
             stringBuilder.append(config.getOutPath());
             if (!config.getOutPath().endsWith("\\"))
                 stringBuilder.append('\\');

@@ -1,13 +1,11 @@
 package org.example.validation;
 
 
-import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.IParametersValidator;
 import com.beust.jcommander.ParameterException;
 
 import java.util.Map;
 
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 public class StatisticFlagsValidator implements IParametersValidator {

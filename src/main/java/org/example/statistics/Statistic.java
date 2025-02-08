@@ -1,6 +1,6 @@
-package org.example;
+package org.example.statistics;
 
-abstract class Statistic {
+public abstract class Statistic {
     Integer charsNumber;
     String dataType;
 
@@ -9,15 +9,15 @@ abstract class Statistic {
         charsNumber = 0;
     }
 
-    public void showShort(){
-        System.out.printf("""
+    public String showShort(){
+        return String.format("""
                         Тип данных %s
                         Число символов: %d
                         %n""",
                 dataType, charsNumber);
     }
 
-    public abstract void showFull();
+    public abstract String showFull();
 
     public abstract void updateStatistic(String line);
 }
