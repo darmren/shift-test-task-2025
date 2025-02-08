@@ -25,7 +25,8 @@ public class Main {
 
     private static HashMap<Type, Statistic> getStatistic(CliArgsConfig config) throws IOException {
         var filterUtil = new FilterUtil(config);
-        var myReader = new MyReader(config.getFiles());
+        var files = config.getFiles();
+        var myReader = new MyReader(files);
         var statistic = new HashMap<>(Map.of(Type.STRING, new StringStatistic(), Type.FLOAT, new FloatStatistic(), Type.INTEGER, new IntStatistic()));
         var detectors = new ArrayList<>(List.of(new StringDetector(), new IntDetector(), new FloatDetector()));
         filterUtil.filter(myReader, statistic, detectors);

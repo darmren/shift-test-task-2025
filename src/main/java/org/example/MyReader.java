@@ -1,5 +1,7 @@
 package org.example;
 
+import com.beust.jcommander.ParameterException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ public class MyReader extends Reader {
     private int currentReader;
 
     public MyReader(List<String> fileNames) throws FileNotFoundException {
+        if (fileNames == null)
+            throw new ParameterException("Список входных файлов не может быть пустым");
         currentReader = 0;
         readers = new ArrayList<>();
         for (String fileName : fileNames) {

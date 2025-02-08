@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="shift-test-task-2025:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/shift_test_task_2025_jar</output-path>
+    <root id="archive" name="shift-test-task-2025.jar">
+      <element id="module-output" name="shift-test-task-2025" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jcommander/jcommander/2.0/jcommander-2.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
