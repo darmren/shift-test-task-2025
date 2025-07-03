@@ -3,6 +3,10 @@ package org.example.statistics;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Класс для сбора статистики по числам с плавающей точкой (float).
+ * Вычисляет минимальное, максимальное значения, сумму и среднее.
+ */
 public class FloatStatistic extends Statistic {
     private BigDecimal minNum;
     private BigDecimal maxNum;
@@ -10,6 +14,10 @@ public class FloatStatistic extends Statistic {
     private BigDecimal average;
     private BigDecimal quantity;
 
+    /**
+     * Создаёт экземпляр статистики для чисел float.
+     * Инициализирует счётчики и сумму нулевыми значениями.
+     */
     public FloatStatistic() {
         super("float");
         sum = BigDecimal.ZERO;
@@ -17,6 +25,12 @@ public class FloatStatistic extends Statistic {
         quantity = BigDecimal.ZERO;
     }
 
+    /**
+     * Возвращает подробную статистику по числам с плавающей точкой.
+     * Включает: минимум, максимум, сумму и среднее значение.
+     *
+     * @return строка с полной статистикой
+     */
     @Override
     public String showFull() {
         average = sum.divide(quantity, RoundingMode.HALF_UP);
@@ -33,6 +47,12 @@ public class FloatStatistic extends Statistic {
         );
     }
 
+    /**
+     * Обновляет статистику на основе очередной строки, представляющей число float.
+     * Обновляет минимум, максимум, сумму, количество и количество символов.
+     *
+     * @param line строка, содержащая число в формате float
+     */
     @Override
     public void updateStatistic(String line) {
         var value = new BigDecimal(line);

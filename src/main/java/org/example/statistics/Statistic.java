@@ -1,15 +1,36 @@
 package org.example.statistics;
 
+/**
+ * Абстрактный класс для сбора статистики по строковым данным определённого типа.
+ * Предоставляет базовую информацию, такую как количество символов и тип данных.
+ */
 public abstract class Statistic {
+    /**
+     * Общее количество символов, обработанных данным сборщиком статистики.
+     */
     Integer charsNumber;
+
+    /**
+     * Тип данных, для которого собирается статистика (например, "float", "string").
+     */
     String dataType;
 
-    public Statistic(String dataType){
+    /**
+     * Конструктор, инициализирующий тип данных и обнуляющий счётчик символов.
+     *
+     * @param dataType строковое представление типа данных
+     */
+    public Statistic(String dataType) {
         this.dataType = dataType;
         charsNumber = 0;
     }
 
-    public String showShort(){
+    /**
+     * Возвращает краткую сводку: тип данных и общее количество символов.
+     *
+     * @return строка с краткой статистикой
+     */
+    public String showShort() {
         return String.format("""
                         Тип данных %s
                         Число символов: %d
@@ -17,7 +38,17 @@ public abstract class Statistic {
                 dataType, charsNumber);
     }
 
+    /**
+     * Абстрактный метод для получения полной статистики, специфичной для конкретного типа данных.
+     *
+     * @return строка с подробной статистикой
+     */
     public abstract String showFull();
 
+    /**
+     * Абстрактный метод для обновления статистики на основе очередной строки.
+     *
+     * @param line строка, которую нужно проанализировать и учесть в статистике
+     */
     public abstract void updateStatistic(String line);
 }
